@@ -23,6 +23,9 @@ class Image(Model):
             if tag != '<none>:<none>'
         ]
 
+    def tag(self, *args, **kwargs):
+        self.api_client.tag(self.id, *args, **kwargs)
+
 
 class ImageCollection(Collection):
     model = Image
@@ -38,3 +41,5 @@ class ImageCollection(Collection):
             for r in self.api_client.images(*args, **kwargs)
         ]
 
+    def remove(self, *args, **kwargs):
+        self.api_client.remove_image(*args, **kwargs)
