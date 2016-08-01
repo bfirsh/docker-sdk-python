@@ -9,6 +9,11 @@ class ContainerTest(unittest.TestCase):
             'hello world\n'
         )
 
+    def test_get(self):
+        client = dockersdk.from_env()
+        container = client.container.run("alpine", "sleep 300", detach=True)
+        assert client.container.get(container.id).attrs['Config']['Image'] == "alpine"
+
     def test_list(self):
         client = dockersdk.from_env()
         container = client.container.run("alpine", "sleep 300", detach=True)
