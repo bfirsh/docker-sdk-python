@@ -6,7 +6,7 @@ class ContainerTest(unittest.TestCase):
         client = dockersdk.from_env()
         self.assertEqual(
             client.container.run("alpine", "echo hello world"),
-            'hello world\n'
+            b'hello world\n'
         )
 
     def test_get(self):
