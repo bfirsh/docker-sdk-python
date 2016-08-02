@@ -14,7 +14,7 @@ class Client(object):
         return cls(docker.from_env())
 
     @property
-    def container(self):
+    def containers(self):
         return ContainerCollection(api_client=self.api_client)
 
     @property
