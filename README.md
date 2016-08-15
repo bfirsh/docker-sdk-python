@@ -27,7 +27,7 @@ You can run containers:
 You can run containers in the background:
 
 ```python
->>> client.containers.run("ubuntu", "tasks/reticulate-splines", detach=True)
+>>> client.containers.run("bfirsh/reticulate-splines", detach=True)
 <Container '45e6d2de7c54'>
 ```
 
@@ -39,8 +39,8 @@ You can manage containers:
 
 >>> container = client.containers.get('45e6d2de7c54')
 
->>> container.config['Cmd']
-["tasks/reticulate-splines"]
+>>> container.attrs['Config']['Image']
+"bfirsh/reticulate-splines"
 
 >>> container.logs()
 "Reticulating spline 1...\n"
@@ -52,7 +52,7 @@ You can stream logs:
 
 ```python
 >>> for line in container.logs(stream=True):
-...   print line
+...   print line.strip()
 Reticulating spline 2...
 Reticulating spline 3...
 ...
