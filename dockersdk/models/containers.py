@@ -97,13 +97,14 @@ class ContainerCollection(Collection):
         return container.logs(stdout=stdout, stderr=stderr)
 
     def create(self, *args, **kwargs):
-        return self.prepare_model(self.api_client.create_container(*args, **kwargs))
+        resp = self.api_client.create_container(*args, **kwargs)
+        return self.get(resp['Id'])
 
     def get(self, cid):
         return self.prepare_model(self.api_client.inspect_container(cid))
 
     def list(self, *args, **kwargs):
         return [
-            self.prepare_model(r)
+            self.get(r['Id'])
             for r in self.api_client.containers(*args, **kwargs)
         ]

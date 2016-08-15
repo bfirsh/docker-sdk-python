@@ -9,6 +9,12 @@ class ContainerTest(unittest.TestCase):
             b'hello world\n'
         )
 
+    def test_run_detach(self):
+        client = dockersdk.from_env()
+        container = client.containers.run("alpine", "sleep 300", detach=True)
+        assert container.attrs['Config']['Image'] == "alpine"
+        assert container.attrs['Config']['Cmd'] == ['sleep', '300']
+
     def test_get(self):
         client = dockersdk.from_env()
         container = client.containers.run("alpine", "sleep 300", detach=True)
@@ -16,8 +22,13 @@ class ContainerTest(unittest.TestCase):
 
     def test_list(self):
         client = dockersdk.from_env()
-        container = client.containers.run("alpine", "sleep 300", detach=True)
-        assert container.id in map(lambda c: c.id, client.containers.list())
+        container_id = client.containers.run("alpine", "sleep 300", detach=True).id
+        containers = [c for c in client.containers.list() if c.id == container_id]
+        assert len(containers) == 1
+
+        container = containers[0]
+        assert container.attrs['Config']['Image'] == 'alpine'
+
         container.kill()
         container.remove()
-        assert container.id not in map(lambda c: c.id, client.containers.list())
+        assert container_id not in [c.id for c in client.containers.list()]
