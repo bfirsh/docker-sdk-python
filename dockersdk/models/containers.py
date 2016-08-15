@@ -99,8 +99,8 @@ class ContainerCollection(Collection):
     def create(self, *args, **kwargs):
         return self.prepare_model(self.api_client.create_container(*args, **kwargs))
 
-    def get(self, id):
-        return self.prepare_model(self.api_client.inspect_container(id))
+    def get(self, cid):
+        return self.prepare_model(self.api_client.inspect_container(cid))
 
     def list(self, *args, **kwargs):
         return [
