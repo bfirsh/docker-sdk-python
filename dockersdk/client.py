@@ -13,6 +13,7 @@ class Client(object):
     def from_env(cls):
         return cls(docker.from_env())
 
+    # Resources
     @property
     def containers(self):
         return ContainerCollection(api_client=self.api_client)
@@ -20,3 +21,19 @@ class Client(object):
     @property
     def images(self):
         return ImageCollection(api_client=self.api_client)
+
+    # Top-level methods
+    def events(self, *args, **kwargs):
+        return self.api_client.events(*args, **kwargs)
+
+    def info(self, *args, **kwargs):
+        return self.api_client.info(*args, **kwargs)
+
+    def login(self, *args, **kwargs):
+        return self.api_client.login(*args, **kwargs)
+
+    def ping(self, *args, **kwargs):
+        return self.api_client.ping(*args, **kwargs) == 'OK'
+
+    def version(self, *args, **kwargs):
+        return self.api_client.version(*args, **kwargs)
