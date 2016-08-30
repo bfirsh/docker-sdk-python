@@ -2,10 +2,8 @@ import dockersdk
 import unittest
 
 class ImageTest(unittest.TestCase):
-    def test_pull(self):
-        client = dockersdk.from_env()
-        image = client.images.pull('alpine:latest')
-        assert 'alpine:latest' in image.attrs['RepoTags']
+    def test_build(self):
+        pass
 
     def test_list(self):
         client = dockersdk.from_env()
@@ -17,6 +15,11 @@ class ImageTest(unittest.TestCase):
         image = client.images.pull('alpine:latest')
         assert image.id in get_ids(client.images.list('alpine'))
         assert image.id in get_ids(client.images.list('alpine:latest'))
+
+    def test_pull(self):
+        client = dockersdk.from_env()
+        image = client.images.pull('alpine:latest')
+        assert 'alpine:latest' in image.attrs['RepoTags']
 
     def test_tag_and_remove(self):
         repo = 'dockersdk.tests.images.test_tag'

@@ -23,17 +23,37 @@ class Image(Model):
             if tag != '<none>:<none>'
         ]
 
+    def history(self):
+        return self.api_client.history(self.id)
+
+    def push(self):
+        return self.api_client.push(self.id)
+
     def tag(self, *args, **kwargs):
         self.api_client.tag(self.id, *args, **kwargs)
-
 
 class ImageCollection(Collection):
     model = Image
 
-    def pull(self, repository, **kwargs):
-        self.api_client.pull(repository, **kwargs)
-        data = self.api_client.inspect_image(repository)
-        return self.prepare_model(data)
+    def build(self, *args, **kwargs):
+        """
+        Build an image and return it.
+        """
+        image_id = self.api_client.build(*args, **kwargs)
+        return self.get(image_id)
+
+    def get(self, name):
+        """
+        Returns an image with the given name.
+        """
+        return self.prepare_model(self.api_client.inspect_image(name))
+
+    def pull(self, name, **kwargs):
+        """
+        Pull an image of the given name and return it.
+        """
+        self.api_client.pull(name, **kwargs)
+        return self.get(name)
 
     def list(self, *args, **kwargs):
         return [
@@ -42,4 +62,7 @@ class ImageCollection(Collection):
         ]
 
     def remove(self, *args, **kwargs):
+        """
+        Remove an image.
+        """
         self.api_client.remove_image(*args, **kwargs)
