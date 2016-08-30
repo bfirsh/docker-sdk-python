@@ -1,7 +1,7 @@
 import dockersdk
 import unittest
 
-class ContainerTest(unittest.TestCase):
+class ContainerCollectionTest(unittest.TestCase):
     def test_run(self):
         client = dockersdk.from_env()
         self.assertEqual(
@@ -32,3 +32,33 @@ class ContainerTest(unittest.TestCase):
         container.kill()
         container.remove()
         assert container_id not in [c.id for c in client.containers.list()]
+
+class ContainerTest(unittest.TestCase):
+    def test_attach(self):
+        pass # TODO
+
+    def test_commit(self):
+        client = dockersdk.from_env()
+        container = client.containers.run("alpine", "cat 'hello' > /test", detach=True)
+        container.wait()
+        image = container.commit()
+        self.assertEqual(client.containers.run(image.id, "cat /test"), "hello")
+
+    def test_diff(self):
+        pass # TODO
+
+    def test_export(self):
+        pass # TODO
+
+    def test_get_archive(self):
+        pass # TODO
+
+    def test_kill(self):
+        client = dockersdk.from_env()
+        container = client.containers.run("alpine", "sleep 300", detach=True)
+        assert container.status == 'running'
+        container.kill()
+        # TODO
+
+    def test_status(self):
+        pass # TODO
