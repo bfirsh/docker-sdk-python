@@ -24,13 +24,13 @@ class Image(Model):
         ]
 
     def history(self):
-        return self.api_client.history(self.id)
+        return self.client.api.history(self.id)
 
     def push(self):
-        return self.api_client.push(self.id)
+        return self.client.api.push(self.id)
 
     def tag(self, *args, **kwargs):
-        self.api_client.tag(self.id, *args, **kwargs)
+        self.client.api.tag(self.id, *args, **kwargs)
 
 class ImageCollection(Collection):
     model = Image
@@ -39,30 +39,30 @@ class ImageCollection(Collection):
         """
         Build an image and return it.
         """
-        image_id = self.api_client.build(*args, **kwargs)
+        image_id = self.client.api.build(*args, **kwargs)
         return self.get(image_id)
 
     def get(self, name):
         """
         Returns an image with the given name.
         """
-        return self.prepare_model(self.api_client.inspect_image(name))
+        return self.prepare_model(self.client.api.inspect_image(name))
 
     def pull(self, name, **kwargs):
         """
         Pull an image of the given name and return it.
         """
-        self.api_client.pull(name, **kwargs)
+        self.client.api.pull(name, **kwargs)
         return self.get(name)
 
     def list(self, *args, **kwargs):
         return [
             self.prepare_model(r)
-            for r in self.api_client.images(*args, **kwargs)
+            for r in self.client.api.images(*args, **kwargs)
         ]
 
     def remove(self, *args, **kwargs):
         """
         Remove an image.
         """
-        self.api_client.remove_image(*args, **kwargs)
+        self.client.api.remove_image(*args, **kwargs)

@@ -6,8 +6,8 @@ def from_env():
     return Client.from_env()
 
 class Client(object):
-    def __init__(self, api_client):
-        self.api_client = api_client
+    def __init__(self, api):
+        self.api = api
 
     @classmethod
     def from_env(cls):
@@ -16,24 +16,24 @@ class Client(object):
     # Resources
     @property
     def containers(self):
-        return ContainerCollection(api_client=self.api_client)
+        return ContainerCollection(client=self)
 
     @property
     def images(self):
-        return ImageCollection(api_client=self.api_client)
+        return ImageCollection(client=self)
 
     # Top-level methods
     def events(self, *args, **kwargs):
-        return self.api_client.events(*args, **kwargs)
+        return self.api.events(*args, **kwargs)
 
     def info(self, *args, **kwargs):
-        return self.api_client.info(*args, **kwargs)
+        return self.api.info(*args, **kwargs)
 
     def login(self, *args, **kwargs):
-        return self.api_client.login(*args, **kwargs)
+        return self.api.login(*args, **kwargs)
 
     def ping(self, *args, **kwargs):
-        return self.api_client.ping(*args, **kwargs) == 'OK'
+        return self.api.ping(*args, **kwargs) == 'OK'
 
     def version(self, *args, **kwargs):
-        return self.api_client.version(*args, **kwargs)
+        return self.api.version(*args, **kwargs)

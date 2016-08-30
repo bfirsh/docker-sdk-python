@@ -17,62 +17,62 @@ class Container(Model):
         return self.attrs['State']['Status']
 
     def attach(self, *args, **kwargs):
-        return self.api_client.attach(self.id, *args, **kwargs)
+        return self.client.api.attach(self.id, *args, **kwargs)
 
     def commit(self, *args, **kwargs):
         # TODO return image
-        return self.api_client.commit(self.id, *args, **kwargs)
+        return self.client.api.commit(self.id, *args, **kwargs)
 
     def diff(self, *args, **kwargs):
-        return self.api_client.diff(self.id, *args, **kwargs)
+        return self.client.api.diff(self.id, *args, **kwargs)
 
     def export(self, *args, **kwargs):
-        return self.api_client.export(self.id, *args, **kwargs)
+        return self.client.api.export(self.id, *args, **kwargs)
 
     def get_archive(self, *args, **kwargs):
-        return self.api_client.get_archive(self.id, *args, **kwargs)
+        return self.client.api.get_archive(self.id, *args, **kwargs)
 
     def kill(self, *args, **kwargs):
-        return self.api_client.kill(self.id, *args, **kwargs)
+        return self.client.api.kill(self.id, *args, **kwargs)
 
     def logs(self, *args, **kwargs):
-        return self.api_client.logs(self.id, *args, **kwargs)
+        return self.client.api.logs(self.id, *args, **kwargs)
 
     def pause(self, *args, **kwargs):
-        return self.api_client.pause(self.id, *args, **kwargs)
+        return self.client.api.pause(self.id, *args, **kwargs)
 
     def put_archive(self, *args, **kwargs):
-        return self.api_client.put_archive(self.id, *args, **kwargs)
+        return self.client.api.put_archive(self.id, *args, **kwargs)
 
     def remove(self, *args, **kwargs):
-        return self.api_client.remove_container(self.id, *args, **kwargs)
+        return self.client.api.remove_container(self.id, *args, **kwargs)
 
     def rename(self, *args, **kwargs):
-        return self.api_client.rename(self.id, *args, **kwargs)
+        return self.client.api.rename(self.id, *args, **kwargs)
 
     def resize(self, *args, **kwargs):
-        return self.api_client.resize(self.id, *args, **kwargs)
+        return self.client.api.resize(self.id, *args, **kwargs)
 
     def restart(self, *args, **kwargs):
-        return self.api_client.restart(self.id, *args, **kwargs)
+        return self.client.api.restart(self.id, *args, **kwargs)
 
     def start(self, *args, **kwargs):
-        return self.api_client.start(self.id, *args, **kwargs)
+        return self.client.api.start(self.id, *args, **kwargs)
 
     def stats(self, *args, **kwargs):
-        return self.api_client.stats(self.id, *args, **kwargs)
+        return self.client.api.stats(self.id, *args, **kwargs)
 
     def stop(self, *args, **kwargs):
-        return self.api_client.stop(self.id, *args, **kwargs)
+        return self.client.api.stop(self.id, *args, **kwargs)
 
     def top(self, *args, **kwargs):
-        return self.api_client.top(self.id, *args, **kwargs)
+        return self.client.api.top(self.id, *args, **kwargs)
 
     def update(self, *args, **kwargs):
-        return self.api_client.update(self.id, *args, **kwargs)
+        return self.client.api.update(self.id, *args, **kwargs)
 
     def wait(self, *args, **kwargs):
-        return self.api_client.wait(self.id, *args, **kwargs)
+        return self.client.api.wait(self.id, *args, **kwargs)
 
 
 class ContainerCollection(Collection):
@@ -104,14 +104,14 @@ class ContainerCollection(Collection):
         return container.logs(stdout=stdout, stderr=stderr)
 
     def create(self, *args, **kwargs):
-        resp = self.api_client.create_container(*args, **kwargs)
+        resp = self.client.api.create_container(*args, **kwargs)
         return self.get(resp['Id'])
 
     def get(self, cid):
-        return self.prepare_model(self.api_client.inspect_container(cid))
+        return self.prepare_model(self.client.api.inspect_container(cid))
 
     def list(self, *args, **kwargs):
         return [
             self.get(r['Id'])
-            for r in self.api_client.containers(*args, **kwargs)
+            for r in self.client.api.containers(*args, **kwargs)
         ]
