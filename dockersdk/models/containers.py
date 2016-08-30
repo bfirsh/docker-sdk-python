@@ -9,6 +9,13 @@ START_KWARGS = ["binds", "port_bindings", "lxc_conf", "publish_all_ports", "link
 
 
 class Container(Model):
+    @property
+    def status(self):
+        """
+        Returns the status of the container. For example, `running` or `exited`.
+        """
+        return self.attrs['State']['Status']
+
     def attach(self, *args, **kwargs):
         return self.api_client.attach(self.id, *args, **kwargs)
 
